@@ -43,7 +43,8 @@ body {
     align-items: center;
     padding: 4rem 0;
     margin-bottom: 2rem;
-    background: linear-gradient(to bottom, var(--phymac-blue), var(--phymac-light-gray));
+    background: linear-gradient(to bottom, var(--phymac-blue), var(--phymac-gray));
+    color: white;
 }
 
 .hero-content {
@@ -136,8 +137,16 @@ body {
 }
 
 .btn-primary {
-    background-color: var(--phymac-blue);
-    border-color: var(--phymac-blue);
+    background-color: var(--phymac-yellow);
+    border-color: var(--phymac-yellow);
+    color: var(--phymac-blue);
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: var(--phymac-orange);
+    border-color: var(--phymac-orange);
+    color: white;
 }
 
 .btn-outline-secondary {
@@ -166,4 +175,8 @@ body {
 
 .bg-secondary {
     background-color: var(--phymac-green) !important;
+}
+
+.bg-light-gray {
+    background-color: var(--phymac-gray);
 }
