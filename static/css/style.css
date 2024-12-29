@@ -153,6 +153,21 @@ h3, .h3 {
     border-color: var(--phymac-green);
 }
 
+.book-card .card-title {
+    color: var(--phymac-blue) !important;
+    font-weight: 600;
+}
+
+.book-card .card-subtitle {
+    color: var(--phymac-blue) !important;
+    opacity: 0.85;
+}
+
+.book-card .card-text {
+    color: var(--phymac-blue);
+    opacity: 0.95;
+}
+
 .contact-form {
     max-width: 600px;
     margin: 0 auto;
