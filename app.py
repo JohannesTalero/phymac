@@ -6,6 +6,8 @@ import markdown
 from database import db
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from slugify import slugify
+from models import Post, Book, Contact, User, Category, Achievement # Added Achievement import
+
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "dev_key_123"
@@ -20,7 +22,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-from models import Post, Book, Contact, User, Category
+from models import Post, Book, Contact, User, Category, Achievement
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -150,6 +153,52 @@ def books():
                          books=books, 
                          categories=categories, 
                          current_category=category)
+
+@app.route('/profile/<username>')
+def profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('profile.html', user=user)
+
+@app.route('/profile/edit', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    if request.method == 'POST':
+        current_user.full_name = request.form.get('full_name')
+        current_user.email = request.form.get('email')
+        current_user.institution = request.form.get('institution')
+        current_user.field_of_study = request.form.get('field_of_study')
+        current_user.bio = request.form.get('bio')
+        current_user.avatar_url = request.form.get('avatar_url')
+
+        db.session.commit()
+        flash('Perfil actualizado correctamente')
+        return redirect(url_for('profile', username=current_user.username))
+
+    return render_template('edit_profile.html')
+
+@app.route('/achievement/add', methods=['GET', 'POST'])
+@login_required
+def add_achievement():
+    if request.method == 'POST':
+        achievement = Achievement(
+            title=request.form.get('title'),
+            description=request.form.get('description'),
+            type=request.form.get('type'),
+            issuer=request.form.get('issuer'),
+            verification_url=request.form.get('verification_url'),
+            user_id=current_user.id
+        )
+
+        if request.form.get('date_earned'):
+            achievement.date_earned = datetime.strptime(request.form.get('date_earned'), '%Y-%m-%d')
+
+        db.session.add(achievement)
+        db.session.commit()
+        flash('Logro agregado correctamente')
+        return redirect(url_for('profile', username=current_user.username))
+
+    return render_template('add_achievement.html')
+
 
 def create_sample_data():
     with app.app_context():
