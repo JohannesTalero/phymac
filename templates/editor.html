@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Editor{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Nuevo Post</h1>
+
+<form method="POST">
+    <div class="mb-3">
+        <label for="title" class="form-label">Título</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+    </div>
+    
+    <div class="mb-3">
+        <label for="editor" class="form-label">Contenido (Markdown + LaTeX)</label>
+        <textarea class="form-control" id="editor" name="content" rows="10" required></textarea>
+        <div id="preview" class="editor-preview"></div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Publicar</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/editor.js') }}"></script>
+{% endblock %}

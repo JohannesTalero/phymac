@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Mi Blog{% endblock %}
+
+{% block content %}
+<div class="p-5 mb-4 rounded-3 bg-dark">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Bienvenido a mi blog</h1>
+        <p class="col-md-8 fs-4">Un espacio para compartir conocimiento y experiencias, con soporte para LaTeX y contenido académico.</p>
+        <a href="{{ url_for('blog') }}" class="btn btn-primary btn-lg">Ver Posts</a>
+    </div>
+</div>
+
+<h2 class="mb-4">Últimos Posts</h2>
+{% for post in posts %}
+<article class="blog-post">
+    <h3><a href="{{ url_for('post', post_id=post.id) }}" class="text-decoration-none">{{ post.title }}</a></h3>
+    <p class="text-muted">{{ post.created_at.strftime('%d-%m-%Y') }}</p>
+    <div>{{ post.html_content | safe | truncate(200) }}</div>
+    <a href="{{ url_for('post', post_id=post.id) }}" class="btn btn-sm btn-outline-secondary">Leer más</a>
+</article>
+{% endfor %}
+{% endblock %}
