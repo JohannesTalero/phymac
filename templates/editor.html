@@ -10,13 +10,23 @@
         <label for="title" class="form-label">Título</label>
         <input type="text" class="form-control" id="title" name="title" required>
     </div>
-    
+
+    <div class="mb-3">
+        <label for="category_id" class="form-label">Categoría</label>
+        <select class="form-select" id="category_id" name="category_id">
+            <option value="">Sin categoría</option>
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
     <div class="mb-3">
         <label for="editor" class="form-label">Contenido (Markdown + LaTeX)</label>
         <textarea class="form-control" id="editor" name="content" rows="10" required></textarea>
         <div id="preview" class="editor-preview"></div>
     </div>
-    
+
     <button type="submit" class="btn btn-primary">Publicar</button>
 </form>
 {% endblock %}

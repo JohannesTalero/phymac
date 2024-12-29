@@ -5,6 +5,7 @@ import bleach
 import markdown
 from database import db
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from slugify import slugify
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "dev_key_123"
@@ -19,7 +20,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-from models import Post, Book, Contact, User
+from models import Post, Book, Contact, User, Category
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -52,8 +53,15 @@ def logout():
 
 @app.route('/blog')
 def blog():
-    posts = Post.query.order_by(Post.created_at.desc()).all()
-    return render_template('blog.html', posts=posts)
+    category_id = request.args.get('category', type=int)
+    if category_id:
+        posts = Post.query.filter_by(category_id=category_id).order_by(Post.created_at.desc()).all()
+        category = Category.query.get_or_404(category_id)
+    else:
+        posts = Post.query.order_by(Post.created_at.desc()).all()
+        category = None
+    categories = Category.query.filter_by(type='post').all()
+    return render_template('blog.html', posts=posts, categories=categories, current_category=category)
 
 @app.route('/blog/<int:post_id>')
 def post(post_id):
@@ -63,9 +71,11 @@ def post(post_id):
 @app.route('/editor', methods=['GET', 'POST'])
 @login_required
 def editor():
+    categories = Category.query.filter_by(type='post').all()
     if request.method == 'POST':
         title = request.form.get('title')
         content = request.form.get('content')
+        category_id = request.form.get('category_id', type=int)
 
         # Sanitize input
         title = bleach.clean(title)
@@ -74,13 +84,38 @@ def editor():
         post = Post(
             title=title, 
             content=content,
-            author=current_user
+            author=current_user,
+            category_id=category_id
         )
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('post', post_id=post.id))
 
-    return render_template('editor.html')
+    return render_template('editor.html', categories=categories)
+
+@app.route('/categories', methods=['GET', 'POST'])
+@login_required
+def manage_categories():
+    if not current_user.is_admin:
+        flash('Acceso denegado')
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        type = request.form.get('type')
+        if name and type:
+            slug = slugify(name)
+            category = Category(name=name, slug=slug, type=type)
+            db.session.add(category)
+            db.session.commit()
+            flash('Categoría creada correctamente')
+            return redirect(url_for('manage_categories'))
+
+    post_categories = Category.query.filter_by(type='post').all()
+    book_categories = Category.query.filter_by(type='book').all()
+    return render_template('categories.html', 
+                         post_categories=post_categories, 
+                         book_categories=book_categories)
 
 @app.route('/about')
 def about():
@@ -103,8 +138,18 @@ def contact():
 
 @app.route('/books')
 def books():
-    books = Book.query.all()
-    return render_template('books.html', books=books)
+    category_id = request.args.get('category', type=int)
+    if category_id:
+        books = Book.query.filter_by(category_id=category_id).all()
+        category = Category.query.get_or_404(category_id)
+    else:
+        books = Book.query.all()
+        category = None
+    categories = Category.query.filter_by(type='book').all()
+    return render_template('books.html', 
+                         books=books, 
+                         categories=categories, 
+                         current_category=category)
 
 with app.app_context():
     db.create_all()
