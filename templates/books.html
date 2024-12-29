@@ -6,8 +6,8 @@
 <h1 class="mb-4">Catálogo de Libros</h1>
 
 <div class="row">
-    <div class="col-md-3">
-        <div class="mb-4">
+    <div class="col-lg-3 col-md-4 mb-4">
+        <div class="sticky-top pt-4">
             <h5>Categorías</h5>
             <div class="list-group">
                 <a href="{{ url_for('books') }}" class="list-group-item list-group-item-action {% if not current_category %}active{% endif %}">
@@ -23,20 +23,20 @@
         </div>
     </div>
 
-    <div class="col-md-9">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col-lg-9 col-md-8">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {% for book in books %}
             <div class="col">
                 <div class="card h-100 book-card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ book.title }}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">{{ book.author }}</h6>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-primary">{{ book.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-primary opacity-75">{{ book.author }}</h6>
                         {% if book.category %}
                         <span class="badge bg-secondary mb-2">{{ book.category.name }}</span>
                         {% endif %}
-                        <p class="card-text">{{ book.description }}</p>
-                        <p class="card-text"><strong>Precio: </strong>${{ "%.2f"|format(book.price) }}</p>
-                        <div class="d-grid gap-2">
+                        <p class="card-text flex-grow-1">{{ book.description }}</p>
+                        <p class="card-text text-primary"><strong>Precio: </strong>${{ "%.2f"|format(book.price) }}</p>
+                        <div class="d-grid gap-2 mt-auto">
                             {% if book.link %}
                             <a href="{{ book.link }}" class="btn btn-primary" target="_blank">Capítulo 1 Gratis</a>
                             {% endif %}
