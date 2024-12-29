@@ -24,7 +24,6 @@ login_manager.login_view = 'login'
 
 from models import Post, Book, Contact, User, Category, Achievement
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -227,6 +226,18 @@ def create_sample_data():
 
             db.session.commit()
 
+def create_ptalero_user():
+    with app.app_context():
+        if not User.query.filter_by(username='ptalero').first():
+            ptalero = User(
+                username='ptalero',
+                email='ptalero@phymac.com',
+                is_admin=False
+            )
+            ptalero.set_password('pactalPhymac123')
+            db.session.add(ptalero)
+            db.session.commit()
+
 with app.app_context():
     db.create_all()
     # Create admin user if it doesn't exist
@@ -238,3 +249,4 @@ with app.app_context():
 
     # Create sample data
     create_sample_data()
+    create_ptalero_user()
