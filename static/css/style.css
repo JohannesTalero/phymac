@@ -1,23 +1,23 @@
 :root {
     --content-width: 800px;
-    --phymac-blue: #2c6fbb;
-    --phymac-green: #48a23f;
-    --phymac-yellow: #ffd700;
-    --phymac-orange: #ff7f50;
-    --phymac-gray: #353840;
-    --phymac-light-gray: #454b55;
+    --phymac-blue: #1A237E;
+    --phymac-green: #43A047;
+    --phymac-yellow: #FFC107;
+    --phymac-orange: #FF7043;
+    --phymac-gray: #CFD8DC;
+    --phymac-light-gray: #ECEFF1;
 }
 
 body {
     line-height: 1.6;
     letter-spacing: 0.3px;
-    background-color: var(--phymac-gray);
+    background-color: var(--phymac-light-gray);
 }
 
 .navbar {
     padding: 1.5rem 0;
-    background: var(--phymac-light-gray) !important;
-    border-bottom: 1px solid var(--phymac-blue);
+    background: var(--phymac-blue) !important;
+    border-bottom: 1px solid var(--phymac-green);
 }
 
 .navbar-brand {
@@ -43,7 +43,7 @@ body {
     align-items: center;
     padding: 4rem 0;
     margin-bottom: 2rem;
-    background: linear-gradient(to bottom, var(--phymac-light-gray), var(--phymac-gray));
+    background: linear-gradient(to bottom, var(--phymac-blue), var(--phymac-light-gray));
 }
 
 .hero-content {
@@ -76,16 +76,17 @@ body {
 .blog-post {
     margin-bottom: 4rem;
     padding: 2rem;
-    background: var(--phymac-light-gray);
+    background: white;
     border-radius: 8px;
     border: 1px solid var(--phymac-blue);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .blog-post h2 {
     font-size: 2rem;
     font-weight: 300;
     margin-bottom: 1rem;
-    color: var(--phymac-yellow);
+    color: var(--phymac-blue);
 }
 
 .blog-post .meta {
@@ -99,30 +100,32 @@ body {
     border: 1px solid var(--phymac-blue);
     padding: 1.5rem;
     margin-top: 1.5rem;
-    background: var(--phymac-light-gray);
+    background: white;
     border-radius: 8px;
 }
 
 .book-card {
     height: 100%;
-    background: var(--phymac-light-gray);
+    background: white;
     border: 1px solid var(--phymac-blue);
     transition: transform 0.2s;
     border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .book-card:hover {
     transform: translateY(-5px);
-    border-color: var(--phymac-yellow);
+    border-color: var(--phymac-green);
 }
 
 .contact-form {
     max-width: 600px;
     margin: 0 auto;
     padding: 2rem;
-    background: var(--phymac-light-gray);
+    background: white;
     border-radius: 8px;
     border: 1px solid var(--phymac-blue);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .btn {
@@ -144,11 +147,11 @@ body {
 
 .btn-outline-secondary:hover {
     background-color: var(--phymac-orange);
-    color: var(--bs-dark);
+    color: white;
 }
 
 .list-group-item {
-    background-color: var(--phymac-light-gray);
+    background-color: white;
     border-color: var(--phymac-blue);
 }
 
