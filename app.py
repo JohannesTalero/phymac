@@ -1,15 +1,11 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
 import bleach
 import markdown
+from database import db
+from utils.docx_converter import import_docx_to_blog
 
-class Base(DeclarativeBase):
-    pass
-
-db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "dev_key_123"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
@@ -41,16 +37,16 @@ def editor():
     if request.method == 'POST':
         title = request.form.get('title')
         content = request.form.get('content')
-        
+
         # Sanitize input
         title = bleach.clean(title)
         content = bleach.clean(content, tags=['p', 'h1', 'h2', 'h3', 'pre', 'code'])
-        
+
         post = Post(title=title, content=content)
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('post', post_id=post.id))
-    
+
     return render_template('editor.html')
 
 @app.route('/about')
@@ -63,19 +59,30 @@ def contact():
         name = bleach.clean(request.form.get('name'))
         email = bleach.clean(request.form.get('email'))
         message = bleach.clean(request.form.get('message'))
-        
+
         contact = Contact(name=name, email=email, message=message)
         db.session.add(contact)
         db.session.commit()
         flash('Mensaje enviado correctamente')
         return redirect(url_for('contact'))
-        
+
     return render_template('contact.html')
 
 @app.route('/books')
 def books():
     books = Book.query.all()
     return render_template('books.html', books=books)
+
+@app.route('/import-document', methods=['GET', 'POST'])
+def import_document():
+    if request.method == 'POST':
+        success, message = import_docx_to_blog('attached_assets/Estatutos_Fundacion_Final (1).docx')
+        if success:
+            flash(message, 'success')
+        else:
+            flash(message, 'error')
+        return redirect(url_for('blog'))
+    return render_template('import_document.html')
 
 with app.app_context():
     db.create_all()

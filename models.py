@@ -1,4 +1,4 @@
-from app import db
+from database import db
 from datetime import datetime
 import markdown
 
@@ -7,7 +7,7 @@ class Post(db.Model):
     title = db.Column(db.String(200), nullable=False)
     content = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
+
     @property
     def html_content(self):
         return markdown.markdown(self.content)
