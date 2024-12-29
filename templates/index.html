@@ -1,13 +1,39 @@
 {% extends "base.html" %}
 
-{% block title %}Inicio - Mi Blog{% endblock %}
+{% block title %}PhyMaC - Fundación para la Difusión del Pensamiento Científico{% endblock %}
 
 {% block content %}
-<div class="p-5 mb-4 rounded-3 bg-dark">
+<div class="p-5 mb-4 rounded-3">
     <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold">Bienvenido a mi blog</h1>
-        <p class="col-md-8 fs-4">Un espacio para compartir conocimiento y experiencias, con soporte para LaTeX y contenido académico.</p>
-        <a href="{{ url_for('blog') }}" class="btn btn-primary btn-lg">Ver Posts</a>
+        <h1 class="display-5 fw-bold">Educación Interactiva con PhyMaC</h1>
+        <p class="col-md-8 fs-4">Somos una fundación comprometida con la promoción de la ciencia a través del juego y la interactividad. Desde Bogotá, inspiramos a estudiantes y entusiastas con recursos innovadores en astronomía, matemáticas y ciencias naturales.</p>
+        <a href="{{ url_for('blog') }}" class="btn btn-primary btn-lg">Explorar Recursos</a>
+    </div>
+</div>
+
+<div class="row g-4 py-5">
+    <div class="col-md-4">
+        <div class="h-100 p-5 bg-light-gray rounded-3">
+            <h2>Recursos Educativos</h2>
+            <p>Diseñamos y publicamos materiales educativos de calidad. Desde libros hasta software didáctico, nuestro enfoque combina creatividad y rigor científico.</p>
+            <a href="{{ url_for('books') }}" class="btn btn-outline-secondary">Ver Recursos</a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="h-100 p-5 bg-light-gray rounded-3">
+            <h2>Colaboración Científica</h2>
+            <p>Trabajamos con entidades nacionales e internacionales para desarrollar programas que amplíen los horizontes de la educación científica.</p>
+            <a href="{{ url_for('about') }}" class="btn btn-outline-secondary">Conoce Más</a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="h-100 p-5 bg-light-gray rounded-3">
+            <h2>Blog Científico</h2>
+            <p>Explora nuestro blog con contenido científico actualizado, experiencias educativas y recursos para el aprendizaje.</p>
+            <a href="{{ url_for('blog') }}" class="btn btn-outline-secondary">Leer Blog</a>
+        </div>
     </div>
 </div>
 
@@ -15,7 +41,12 @@
 {% for post in posts %}
 <article class="blog-post">
     <h3><a href="{{ url_for('post', post_id=post.id) }}" class="text-decoration-none">{{ post.title }}</a></h3>
-    <p class="text-muted">{{ post.created_at.strftime('%d-%m-%Y') }}</p>
+    <p class="text-muted">
+        {{ post.created_at.strftime('%d-%m-%Y') }}
+        {% if post.category %}
+        · <span class="badge bg-secondary">{{ post.category.name }}</span>
+        {% endif %}
+    </p>
     <div>{{ post.html_content | safe | truncate(200) }}</div>
     <a href="{{ url_for('post', post_id=post.id) }}" class="btn btn-sm btn-outline-secondary">Leer más</a>
 </article>
