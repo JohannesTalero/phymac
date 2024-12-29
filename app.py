@@ -151,6 +151,33 @@ def books():
                          categories=categories, 
                          current_category=category)
 
+def create_sample_data():
+    with app.app_context():
+        # Create sample books if none exist
+        if not Book.query.first():
+            sample_books = [
+                {
+                    'title': 'Fundamentos de Física Cuántica',
+                    'author': 'Dr. María González',
+                    'description': 'Una introducción clara y accesible a los principios fundamentales de la física cuántica.',
+                    'price': 29.99,
+                    'link': 'https://phymac.com/books/quantum-physics-chapter1'
+                },
+                {
+                    'title': 'Matemáticas Avanzadas para Ciencias',
+                    'author': 'Dr. Juan Pérez',
+                    'description': 'Texto completo que cubre desde cálculo avanzado hasta ecuaciones diferenciales.',
+                    'price': 34.99,
+                    'link': 'https://phymac.com/books/advanced-math-chapter1'
+                }
+            ]
+
+            for book_data in sample_books:
+                book = Book(**book_data)
+                db.session.add(book)
+
+            db.session.commit()
+
 with app.app_context():
     db.create_all()
     # Create admin user if it doesn't exist
@@ -159,3 +186,6 @@ with app.app_context():
         admin.set_password('admin')  # Change this password in production!
         db.session.add(admin)
         db.session.commit()
+
+    # Create sample data
+    create_sample_data()

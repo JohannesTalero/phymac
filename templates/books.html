@@ -36,9 +36,12 @@
                         {% endif %}
                         <p class="card-text">{{ book.description }}</p>
                         <p class="card-text"><strong>Precio: </strong>${{ "%.2f"|format(book.price) }}</p>
-                        {% if book.link %}
-                        <a href="{{ book.link }}" class="btn btn-primary" target="_blank">Comprar</a>
-                        {% endif %}
+                        <div class="d-grid gap-2">
+                            {% if book.link %}
+                            <a href="{{ book.link }}" class="btn btn-primary" target="_blank">Capítulo 1 Gratis</a>
+                            {% endif %}
+                            <a href="#" class="btn btn-outline-secondary">Adquirir Libro</a>
+                        </div>
                     </div>
                 </div>
             </div>
