@@ -12,6 +12,7 @@ body {
     line-height: 1.6;
     letter-spacing: 0.3px;
     background-color: var(--phymac-light-gray);
+    color: var(--phymac-blue);
 }
 
 .navbar {
@@ -47,6 +48,17 @@ body {
     color: white;
 }
 
+.hero-section h1,
+.hero-section h2,
+.hero-section h3 {
+    color: var(--phymac-yellow);
+}
+
+.hero-section p {
+    color: white;
+    opacity: 0.9;
+}
+
 .hero-content {
     max-width: var(--content-width);
     margin: 0 auto;
@@ -68,6 +80,22 @@ body {
     color: var(--bs-light);
 }
 
+h1, .h1 {
+    color: var(--phymac-blue);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+h2, .h2 {
+    color: var(--phymac-green);
+    font-weight: 500;
+}
+
+h3, .h3 {
+    color: var(--phymac-blue);
+    opacity: 0.9;
+}
+
 .content-container {
     max-width: var(--content-width);
     margin: 0 auto;
@@ -85,13 +113,19 @@ body {
 
 .blog-post h2 {
     font-size: 2rem;
-    font-weight: 300;
+    font-weight: 500;
     margin-bottom: 1rem;
     color: var(--phymac-blue);
 }
 
+.blog-post h3 {
+    color: var(--phymac-green);
+    font-weight: 500;
+}
+
 .blog-post .meta {
     font-size: 0.9rem;
+    color: var(--phymac-blue);
     opacity: 0.8;
     margin-bottom: 1rem;
 }
@@ -179,4 +213,9 @@ body {
 
 .bg-light-gray {
     background-color: var(--phymac-gray);
+}
+
+.text-muted {
+    color: var(--phymac-blue) !important;
+    opacity: 0.7;
 }
