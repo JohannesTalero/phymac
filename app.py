@@ -4,7 +4,6 @@ from datetime import datetime
 import bleach
 import markdown
 from database import db
-from utils.docx_converter import import_docx_to_blog
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 app = Flask(__name__)
@@ -106,22 +105,6 @@ def contact():
 def books():
     books = Book.query.all()
     return render_template('books.html', books=books)
-
-@app.route('/import-document', methods=['GET', 'POST'])
-@login_required
-def import_document():
-    if not current_user.is_admin:
-        flash('No tienes permiso para acceder a esta página')
-        return redirect(url_for('index'))
-
-    if request.method == 'POST':
-        success, message = import_docx_to_blog('attached_assets/Estatutos_Fundacion_Final (1).docx')
-        if success:
-            flash(message, 'success')
-        else:
-            flash(message, 'error')
-        return redirect(url_for('blog'))
-    return render_template('import_document.html')
 
 with app.app_context():
     db.create_all()
